@@ -5,15 +5,11 @@ import pymongo
 from pyquery import PyQuery as pq
 from urllib.parse import urljoin
 import multiprocessing
-from urllib3.exceptions import InsecureRequestWarning
-
-# Suppress only the single warning from urllib3 needed.
-requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s: %(message)s')
 
-BASE_URL = 'https://ssr2.scrape.center'
+BASE_URL = 'https://ssr3.scrape.center'
 TOTAL_PAGE = 10
 MONGO_CONNECTION_STRING = 'mongodb://localhost:27017'
 MONGO_DB_NAME = 'movies'
@@ -32,7 +28,7 @@ def scrape_page(url):
     """
     logging.info('scraping %s...', url)
     try:
-        response = requests.get(url, verify=False)
+        response = requests.get(url, auth=('admin', 'admin'))
         if response.status_code == 200:
             return response.text
         logging.error('get invalid status code %s while scraping %s',
